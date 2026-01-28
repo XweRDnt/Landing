@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -601,4 +602,71 @@
                 plusMinus.textContent = '−';
             } else {
                 plusMinus.textContent = '+';
+            }
+        }
         
+        // Form submission
+        function submitForm(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const barbershop = document.getElementById('barbershop').value;
+            const city = document.getElementById('city').value;
+            
+            // Decrease free spots counter
+            const spotsElement = document.getElementById('free-spots');
+            let spots = parseInt(spotsElement.textContent);
+            if (spots > 0) {
+                spots -= 1;
+                spotsElement.textContent = spots;
+                
+                // Update offer badge if spots are gone
+                if (spots === 0) {
+                    document.querySelector('.offer-badge').textContent = "Бесплатные места закончились!";
+                    document.querySelector('.counter').innerHTML = 'Все бесплатные места заняты!';
+                }
+            }
+            
+            // Create Telegram message
+            const message = `Новая заявка на чат-бота:%0A%0AИмя: ${name}%0AКонтакты: ${phone}%0AБарбершоп: ${barbershop}%0AГород: ${city}%0A%0AСвязаться как можно скорее!`;
+            
+            // YOUR Telegram username - ЗАМЕНИТЕ ЭТО НА СВОЙ!
+            const telegramUsername = "ваш_логин"; // Замените на ваш Telegram username
+            
+            // Open Telegram with pre-filled message
+            window.open(`https://t.me/${telegramUsername}?text=${message}`, '_blank');
+            
+            // Show success message
+            alert(`Спасибо, ${name}! Мы свяжемся с вами в Telegram в течение 15 минут.`);
+            
+            // Reset form
+            document.getElementById('lead-form').reset();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Initialize FAQ
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
